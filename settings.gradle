@@ -1,0 +1,4 @@
+rootProject.name = 'house'
+include 'house-common'
+include 'house-biz'
+include 'house-web'

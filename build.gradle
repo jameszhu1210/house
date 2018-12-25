@@ -1,0 +1,62 @@
+group = 'com.sysco.house'
+version = '0.0.1-SNAPSHOT'
+
+buildscript {
+    ext {
+        springBootVersion = '1.5.9.RELEASE'
+    }
+    repositories {
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        mavenCentral()
+    }
+
+    dependencies {//用来打包
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+
+}
+
+allprojects {
+
+    repositories {
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        mavenCentral()
+    }
+
+    //指定编码格式
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+}
+
+//设定当前模块项目中的配置
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    //spring boot 插件
+    apply plugin: 'org.springframework.boot'
+    //A Gradle plugin that provides Maven-like dependency management functionality
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'application'
+
+    sourceCompatibility = 1.8
+
+    dependencies {
+        //使用jetty替换tomcat
+        compile('org.springframework.boot:spring-boot-starter-web'){exclude(module: 'spring-boot-starter-tomcat')}
+        compile('org.springframework.boot:spring-boot-starter-jetty')
+        //数据库驱动
+        compile 'mysql:mysql-connector-java:6.0.6'
+        //mybatis plus
+        compile("org.springframework.boot:spring-boot-starter-jdbc")
+        compile 'com.baomidou:mybatisplus-spring-boot-starter:1.0.5'
+        compile 'com.baomidou:mybatis-plus:2.1.8'
+        //druid阿里巴巴数据库连接池
+        compile 'com.alibaba:druid:1.1.6'
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+    }
+    jar {
+        manifest.attributes provider: 'gradle'
+    }
+}
+
