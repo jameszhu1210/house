@@ -1,4 +1,4 @@
-package com.sysco.house.common.model.response;
+package com.sysco.house.common.response;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -46,6 +46,8 @@ public  class GenericResponse extends ResourceSupport implements Serializable {
 	 * A String containing error message.
 	 */
 	private String errorMessage;
+
+	private String msg;
 	
 	/**
 	 *

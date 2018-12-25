@@ -29,11 +29,11 @@ public class User extends Model<User> implements Serializable {
 
     private String avatar;
 
-    private String type;
+    private Integer type;
 
     private Date createTime;
 
-    private String enable;
+    private Integer enable;
 
     private Integer agencyId;
 
