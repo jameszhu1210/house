@@ -12,4 +12,10 @@ public interface UserService {
      * @param file
      */
     void addAccount(RegisterUser account, MultipartFile file);
+
+    /**
+     * 激活用户，enable设为1
+     * @param key
+     */
+    void verityAccount(String key);
 }

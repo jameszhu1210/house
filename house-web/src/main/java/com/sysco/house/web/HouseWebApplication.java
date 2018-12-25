@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@EnableAutoConfiguration
 @MapperScan("com.sysco.house.biz.mapper")
 @ComponentScan(basePackages={"com.sysco.house.biz","com.sysco.house.web","com.sysco.house.common"})
 public class HouseWebApplication {

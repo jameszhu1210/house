@@ -1,11 +1,10 @@
 package com.sysco.house.web.controller;
 
-import com.sysco.house.biz.mapper.UserMapper;
+
 import com.sysco.house.biz.service.UserService;
 import com.sysco.house.common.exception.ValidationException;
 import com.sysco.house.common.request.RegisterUser;
 import com.sysco.house.common.response.GenericResponse;
-import com.sysco.house.common.utils.FormatterUtils;
 import com.sysco.house.web.utils.ValidateUtils;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -13,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Date;
 
 @RestController
 public class UserController {
@@ -51,4 +48,20 @@ public class UserController {
         return genericResponse;
     }
 
+
+    /**
+     * 激活用户接口
+     * @param key
+     * @return
+     */
+    @RequestMapping(value = "accounts/verity", method = RequestMethod.GET)
+    @ApiOperation(value = "accounts/verity", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse accountsVerity(String key){
+        GenericResponse genericResponse = new GenericResponse();
+        genericResponse.setResult(true);
+        genericResponse.setMsg("激活成功");
+        userService.verityAccount(key);
+        return genericResponse;
+    }
 }

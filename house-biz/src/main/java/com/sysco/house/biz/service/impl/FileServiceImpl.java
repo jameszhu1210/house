@@ -43,7 +43,8 @@ public class FileServiceImpl implements FileService {
      * @throws IOException
      */
     public File saveToLocal(MultipartFile file) throws IOException {
-        File newFile = new File(filePath + "\\\\" + System.currentTimeMillis() + "\\\\" + file.getOriginalFilename());
+        /*File newFile = new File(filePath + "\\\\" + System.currentTimeMillis() + "\\\\" + file.getOriginalFilename());*/
+        File newFile = new File(filePath + "/" + System.currentTimeMillis() + "/" + file.getOriginalFilename());
         if(!newFile.exists()){
             newFile.getParentFile().mkdirs();
             newFile.createNewFile();

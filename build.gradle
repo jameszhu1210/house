@@ -57,7 +57,11 @@ subprojects {
         //swagger2
         compile('io.springfox:springfox-swagger2:2.8.0')
         runtime('io.springfox:springfox-swagger-ui:2.8.0')
-
+        //spring mail
+        compile('org.springframework.boot:spring-boot-starter-mail')
+        //rabbitmq
+        compile "org.springframework.boot:spring-boot-starter-amqp"
+        
         compile 'org.projectlombok:lombok:1.16.8'
         compile 'org.apache.commons:commons-lang3:3.0'
         compile group: 'com.google.guava', name: 'guava', version: '20.0'
