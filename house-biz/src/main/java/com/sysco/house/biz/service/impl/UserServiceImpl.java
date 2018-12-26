@@ -11,6 +11,7 @@ import com.sysco.house.common.request.RegisterUser;
 import com.sysco.house.common.utils.FormatterUtils;
 import com.sysco.house.common.utils.HashUtils;
 import com.sysco.house.common.utils.ObjectUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.AbstractJavaTypeMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -95,5 +96,23 @@ public class UserServiceImpl implements UserService {
             return users.get(0).setAvatar(filePreFix + users.get(0).getAvatar());
         }
         return null;
+    }
+
+    @Override
+    public void updateUser(RegisterUser account) {
+        EntityWrapper<User> ew = new EntityWrapper<>();
+        ew.eq("email", account.getEmail());
+        User user = new User().setAboutMe(account.getAboutMe())
+                .setPhone(account.getPhone())
+                .setName(account.getName());
+        if(StringUtils.isNotBlank(account.getPasswd())){
+            user.setPasswd(HashUtils.encryPassword(account.getPasswd()));
+        }
+        userMapper.update(user, ew);
+    }
+
+    @Override
+    public List<User> getUseByQuery(EntityWrapper<User> ew) {
+        return userMapper.selectList(ew);
     }
 }

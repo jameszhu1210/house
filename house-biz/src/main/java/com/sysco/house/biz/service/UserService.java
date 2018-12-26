@@ -1,8 +1,11 @@
 package com.sysco.house.biz.service;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.sysco.house.common.model.User;
 import com.sysco.house.common.request.RegisterUser;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface UserService {
     /**
@@ -26,4 +29,16 @@ public interface UserService {
      * @param password
      */
     User auto(String username, String password);
+
+    /**
+     * 修改用户接口
+     * @param account
+     */
+    void updateUser(RegisterUser account);
+
+    /**
+     * 根据条件查询user
+     * @param ew
+     */
+    List<User> getUseByQuery(EntityWrapper<User> ew);
 }

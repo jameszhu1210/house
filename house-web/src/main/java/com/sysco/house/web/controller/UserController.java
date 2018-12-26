@@ -1,6 +1,7 @@
 package com.sysco.house.web.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.sysco.house.biz.service.UserService;
 import com.sysco.house.common.exception.ValidationException;
 import com.sysco.house.common.model.User;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -120,6 +122,32 @@ public class UserController {
         GenericResponse genericResponse = new GenericResponse();
         genericResponse.setResult(true);
         genericResponse.setMsg("登出成功");
+        return genericResponse;
+    }
+
+    /**
+     * 1。跳转到修改个人信息页面
+     * 2。修改个人信息
+     * @param updateUser
+     * @return
+     */
+    @RequestMapping(value = "accounts/profile", method = RequestMethod.POST)
+    @ApiOperation(value = "accounts/profile", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse profile(HttpServletRequest request, @RequestBody RegisterUser updateUser){
+        GenericResponse genericResponse = new GenericResponse();
+        genericResponse.setResult(true);
+        genericResponse.setMsg("修改用户成功");
+        if(StringUtils.isBlank(updateUser.getEmail())){
+            genericResponse.setMsg("跳转到个人信息页面");
+        }else{
+            userService.updateUser(updateUser);
+            //更新session
+            EntityWrapper<User> ew = new EntityWrapper<>();
+            ew.eq("email", updateUser.getEmail());
+            List<User> useByQuery = userService.getUseByQuery(ew);
+            request.getSession().setAttribute("loginUser", useByQuery.get(0));
+        }
         return genericResponse;
     }
 }
