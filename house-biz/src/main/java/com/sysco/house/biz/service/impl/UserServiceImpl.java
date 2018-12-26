@@ -15,6 +15,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.AbstractJavaTypeMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Value("${file.prefix}")
+    private String filePreFix;
 
     @Override
     public void addAccount(RegisterUser account, MultipartFile file) {
@@ -78,5 +82,18 @@ public class UserServiceImpl implements UserService {
                 userMapper.update(x, ew);
             }
         }
+    }
+
+    @Override
+    public User auto(String username, String password) {
+        EntityWrapper<User> ew = new EntityWrapper<>();
+        ew.eq("name", username);
+        ew.eq("passwd", HashUtils.encryPassword(password));
+        ew.eq("enable",1);
+        List<User> users = userMapper.selectList(ew);
+        if(!users.isEmpty()){
+            return users.get(0).setAvatar(filePreFix + users.get(0).getAvatar());
+        }
+        return null;
     }
 }

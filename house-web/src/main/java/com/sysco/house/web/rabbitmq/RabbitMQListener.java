@@ -4,7 +4,6 @@ package com.sysco.house.web.rabbitmq;
 import com.sysco.house.biz.mapper.UserMapper;
 import com.sysco.house.biz.service.MailService;
 import com.sysco.house.common.model.User;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

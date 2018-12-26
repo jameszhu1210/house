@@ -1,5 +1,6 @@
 package com.sysco.house.biz.service;
 
+import com.sysco.house.common.model.User;
 import com.sysco.house.common.request.RegisterUser;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,4 +19,11 @@ public interface UserService {
      * @param key
      */
     void verityAccount(String key);
+
+    /**
+     * 登陆用户
+     * @param username
+     * @param password
+     */
+    User auto(String username, String password);
 }

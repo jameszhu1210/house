@@ -3,6 +3,7 @@ package com.sysco.house.web.controller;
 
 import com.sysco.house.biz.service.UserService;
 import com.sysco.house.common.exception.ValidationException;
+import com.sysco.house.common.model.User;
 import com.sysco.house.common.request.RegisterUser;
 import com.sysco.house.common.response.GenericResponse;
 import com.sysco.house.web.utils.ValidateUtils;
@@ -12,6 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -62,6 +68,58 @@ public class UserController {
         genericResponse.setResult(true);
         genericResponse.setMsg("激活成功");
         userService.verityAccount(key);
+        return genericResponse;
+    }
+
+    /**
+     *  登陆接口
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "accounts/sign-in", method = RequestMethod.POST)
+    @ApiOperation(value = "accounts/sign-in", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse signIn(HttpServletRequest request, @RequestParam String username,
+                                  @RequestParam String password){
+        GenericResponse genericResponse = new GenericResponse();
+        genericResponse.setResult(true);
+        genericResponse.setMsg("登陆成功");
+        if(username == null || password == null){
+            throw new ValidationException(HttpStatus.OK, "跳转到登陆页面");
+        }else{
+            User user = userService.auto(username, password);
+            if(user == null){
+                genericResponse.setMsg("");
+                genericResponse.setResult(false);
+                genericResponse.setErrorMessage("用户名密码错误");
+            }else{
+                HttpSession session = request.getSession();
+                User user1 = (User)session.getAttribute("user");
+                session.setAttribute("loginUser", user);
+                session.setAttribute("user", user);
+                Map<String, User> map = new HashMap<>(1);
+                map.put("user", user);
+                genericResponse.setMapData(map);
+            }
+        }
+        return genericResponse;
+    }
+
+    /**
+     * 登出操作
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "accounts/logout", method = RequestMethod.POST)
+    @ApiOperation(value = "accounts/logout", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse logout(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
+        session.invalidate();
+        GenericResponse genericResponse = new GenericResponse();
+        genericResponse.setResult(true);
+        genericResponse.setMsg("登出成功");
         return genericResponse;
     }
 }
