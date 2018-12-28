@@ -1,6 +1,7 @@
 package com.sysco.house.biz.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.sysco.house.biz.mapper.AgencyMapper;
 import com.sysco.house.biz.mapper.UserMapper;
 import com.sysco.house.biz.service.FileService;
 import com.sysco.house.biz.service.MailService;
@@ -35,6 +36,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private AgencyMapper agencyMapper;
+
     @Value("${file.prefix}")
     private String filePreFix;
 
@@ -50,6 +54,10 @@ public class UserServiceImpl implements UserService {
         user.setEnable(0);
         user.setCreateTime(FormatterUtils.getCreateTime());
         ObjectUtil.transfer(account, user);
+        //如果是经纪人
+        if(account.getType() == 2){
+
+        }
         userMapper.insert(user);
         registerNotify(user);
 
