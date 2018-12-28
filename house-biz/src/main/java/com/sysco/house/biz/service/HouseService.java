@@ -1,12 +1,19 @@
 package com.sysco.house.biz.service;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.sysco.house.common.dto.HouseListDto;
 import com.sysco.house.common.model.House;
 import com.sysco.house.common.model.User;
 import com.sysco.house.common.request.AddHouse;
+import com.sysco.house.common.request.HouseListCondition;
 import com.sysco.house.common.request.OwnListCondition;
 
 public interface HouseService {
+    /**
+     * 查询房屋列表接口
+     * @param condition
+     */
+    Page<HouseListDto> queryHouseList(HouseListCondition condition);
     /**
      * 添加房屋接口
      * 1 添加房屋图片

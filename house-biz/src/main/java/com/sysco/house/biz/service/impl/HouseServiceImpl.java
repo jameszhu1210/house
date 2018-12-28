@@ -6,14 +6,19 @@ import com.sysco.house.biz.mapper.HouseMapper;
 import com.sysco.house.biz.mapper.HouseUserMapper;
 import com.sysco.house.biz.service.FileService;
 import com.sysco.house.biz.service.HouseService;
+import com.sysco.house.common.dto.HouseListDto;
 import com.sysco.house.common.model.House;
 import com.sysco.house.common.model.HouseUser;
 import com.sysco.house.common.model.User;
 import com.sysco.house.common.request.AddHouse;
+import com.sysco.house.common.request.HouseListCondition;
 import com.sysco.house.common.request.OwnListCondition;
+import com.sysco.house.common.response.ResHouseList;
 import com.sysco.house.common.utils.FormatterUtils;
 import com.sysco.house.common.utils.ObjectUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,6 +26,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 @Service
 public class HouseServiceImpl implements HouseService {
+    @Value("${file.prefix}")
+    private String filePreFix;
+
     @Autowired
     private FileService fileService;
 
@@ -64,11 +72,28 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public Page<House> houseOwnList(OwnListCondition condition) {
         Page<House> page = new Page<>(condition.getOffset(),condition.getLimit());
-/*        EntityWrapper<HouseUser> ew = new EntityWrapper<>();
-        ew.eq("name", condition.getName());
-        ew.eq("type", condition.getType());
-        ew.orderBy(condition.getOrder(), condition.getDesc());*/
         page.setRecords(houseMapper.selectOwnList(page,condition));
+        return page;
+    }
+
+    @Override
+    public Page<HouseListDto> queryHouseList(HouseListCondition condition) {
+        Page<HouseListDto> page = new Page<>(condition.getOffset(),condition.getLimit());
+        List<HouseListDto> houseListDtos = houseMapper.queryHouseList(page, condition);
+        houseListDtos.forEach(m -> {
+            if (StringUtils.isNotBlank(m.getImages())) {
+                m.setFirstImage(filePreFix + m.getImages().split(",")[0]);
+                for (String s : m.getImages().split(",")) {
+                    m.getImageFiles().add(filePreFix + s);
+                }
+            }
+            if (StringUtils.isNotBlank(m.getFloorPlan())) {
+                for (String s : m.getFloorPlan().split(",")) {
+                    m.getFloorPlanFiles().add(filePreFix + s);
+                }
+            }
+        });
+        page.setRecords(houseListDtos);
         return page;
     }
 }

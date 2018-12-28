@@ -61,4 +61,26 @@
       </otherwise>
     </choose>
   </select>
+
+  <select id="queryHouseList" parameterType="com.sysco.house.common.request.HouseListCondition" resultType="com.sysco.house.common.dto.HouseListDto">
+    SELECT a.*,
+    b.name communityName,
+    b.city_name cityName
+    FROM house a, community b
+    where a.community_id = b.id
+    <if test="communityName!=null and communityName!=''">
+      and b.name = like '%' #{communityName} '%'
+    </if>
+    <if test="type!=null and type!='' and type>0">
+      and a.type = #{type}
+    </if>
+    <choose>
+      <when test="sort != null and sort != ''">
+        ORDER BY ${sort} ${order}
+      </when>
+      <otherwise>
+        ORDER BY a.create_time ASC
+      </otherwise>
+    </choose>
+  </select>
 </mapper>

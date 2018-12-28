@@ -3,9 +3,11 @@ package com.sysco.house.web.controller;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.sysco.house.biz.service.HouseService;
 import com.sysco.house.biz.service.UserService;
+import com.sysco.house.common.dto.HouseListDto;
 import com.sysco.house.common.model.House;
 import com.sysco.house.common.model.User;
 import com.sysco.house.common.request.AddHouse;
+import com.sysco.house.common.request.HouseListCondition;
 import com.sysco.house.common.request.OwnListCondition;
 import com.sysco.house.common.response.GenericResponse;
 import com.sysco.house.web.interceptor.UserContext;
@@ -60,6 +62,28 @@ public class HouseController {
         houseService.addHouse(house, user);
         return genericResponse;
     }
+
+    /**
+     * 房屋列表接口
+     * 1.实现分页
+     * 2.支持小区搜索，类型搜索
+     * 3.支持排序
+     * 4.支持展示图片，价格，标题，地址等信息
+     * @param condition
+     * @return
+     */
+    @RequestMapping(value = "house/list", method = RequestMethod.POST)
+    @ApiOperation(value = "house/list", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse houseList(@RequestBody HouseListCondition condition){
+        GenericResponse genericResponse = new GenericResponse();
+        genericResponse.setResult(true);
+        genericResponse.setMsg("查询房产列表页成功");
+        Page<HouseListDto> houseListDtoPage = houseService.queryHouseList(condition);
+        genericResponse.setResponse(houseListDtoPage);
+        return genericResponse;
+    }
+
 
     /**
      * 个人房产信息页
