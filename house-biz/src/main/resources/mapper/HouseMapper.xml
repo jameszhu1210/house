@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sysco.house.biz.mapper.HouseMapper">
+  <resultMap id="BaseResultMap" type="com.sysco.house.common.model.House">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="images" jdbcType="VARCHAR" property="images" />
+    <result column="area" jdbcType="INTEGER" property="area" />
+    <result column="beds" jdbcType="INTEGER" property="beds" />
+    <result column="baths" jdbcType="INTEGER" property="baths" />
+    <result column="rating" jdbcType="DOUBLE" property="rating" />
+    <result column="remakes" jdbcType="VARCHAR" property="remakes" />
+    <result column="properties" jdbcType="VARCHAR" property="properties" />
+    <result column="floor_plan" jdbcType="VARCHAR" property="floorPlan" />
+    <result column="tags" jdbcType="VARCHAR" property="tags" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="community_id" jdbcType="INTEGER" property="communityId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, type, price, images, area, beds, baths, rating, remakes, properties, floor_plan, 
+    tags, create_time, city_id, community_id, address, state
+  </sql>
+  <select id="selectOwnList" parameterType="com.sysco.house.common.request.OwnListCondition" resultType="com.sysco.house.common.model.House">
+    select
+    a.id id,
+    a.name name,
+    a.price price,
+    a.type type,
+    a.images images,
+    a.area area,
+    a.beds beds,
+    a.baths baths,
+    a.rating rating,
+    a.remakes remakes,
+    a.properties properties,
+    a.floor_plan floorPlan,
+    a.tags tags,
+    a.create_time createTime,
+    a.city_id cityId,
+    a.community_id communityId,
+    a.address address
+    from house a, house_user b
+    where b.user_id = #{userId} and a.id = b.house_id
+    <if test="name!=null and name!=''">
+      and a.name = #{name}
+    </if>
+    <if test="type!=null and type!='' and type>0">
+      and a.type = #{type}
+    </if>
+    <choose>
+      <when test="sort != null and sort != ''">
+        ORDER BY ${sort} ${order}
+      </when>
+      <otherwise>
+        ORDER BY a.create_time ASC
+      </otherwise>
+    </choose>
+  </select>
+</mapper>

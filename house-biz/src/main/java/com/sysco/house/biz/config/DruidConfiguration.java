@@ -16,7 +16,7 @@ import java.sql.SQLException;
 /**
  * Created by james.zhu on 2018/12/24.
  */
-@Configuration
+//@Configuration
 public class DruidConfiguration {
     @Value("${spring.datasource.url}")
     private String dbUrl;

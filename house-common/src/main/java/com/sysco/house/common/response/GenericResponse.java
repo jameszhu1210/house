@@ -48,7 +48,8 @@ public  class GenericResponse extends ResourceSupport implements Serializable {
 	private String errorMessage;
 
 	private String msg;
-	
+
+	private Object response;
 	/**
 	 *
 	 */

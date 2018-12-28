@@ -19,7 +19,7 @@ import java.util.Map;
  * rabbitmq 配置
  * Created by steadyjack on 2017/12/01.
  */
-@Configuration
+//@Configuration
 public class RabbitmqConfig {
 
     private final static Logger log = LoggerFactory.getLogger("mqLog");

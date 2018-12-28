@@ -18,7 +18,7 @@ public class WebMvcConf extends WebMvcConfigurerAdapter {
         //不需要拦截static
         registry.addInterceptor(autoInterceptor).excludePathPatterns("/static").addPathPatterns("/**");
         //只拦截需要登陆才能访问接口
-        registry.addInterceptor(autoActionInterceptor).addPathPatterns("/accounts/profile");
+        registry.addInterceptor(autoActionInterceptor).addPathPatterns("/accounts/profile", "/house/add");
         super.addInterceptors(registry);
     }
 }

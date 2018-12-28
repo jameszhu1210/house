@@ -15,9 +15,9 @@ public class AutoActionInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         User user = UserContext.getUser();
-        if(user == null){
+        /*if(user == null){
             throw new ValidationException(HttpStatus.OK, "请先登录");
-        }
+        }*/
         return true;
     }
 

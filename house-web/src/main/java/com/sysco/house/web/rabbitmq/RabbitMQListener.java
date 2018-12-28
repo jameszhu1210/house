@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.handler.annotation.Payload;
 
-@Configuration
+//@Configuration
 public class RabbitMQListener {
 
     private final static Logger log= LoggerFactory.getLogger("listen");
