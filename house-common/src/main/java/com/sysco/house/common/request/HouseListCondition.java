@@ -12,5 +12,11 @@ public class HouseListCondition extends BasePageRequestBean{
     //类型
     private Integer type;
 
+    //用户id
+    private Integer userId;
+
+    //用户id
+    private Long houseId;
+
 
 }

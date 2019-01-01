@@ -5,8 +5,10 @@ import com.sysco.house.common.dto.HouseListDto;
 import com.sysco.house.common.model.House;
 import com.sysco.house.common.model.User;
 import com.sysco.house.common.request.AddHouse;
+import com.sysco.house.common.request.AddHouseMsg;
 import com.sysco.house.common.request.HouseListCondition;
 import com.sysco.house.common.request.OwnListCondition;
+import com.sysco.house.common.response.ResHouseDetail;
 
 public interface HouseService {
     /**
@@ -38,4 +40,17 @@ public interface HouseService {
      * @param condition
      */
     Page<House> houseOwnList(OwnListCondition condition);
+
+    /**
+     * 房屋详细信息接口
+     * @param id
+     * @return
+     */
+    ResHouseDetail houseDetail(Long id);
+
+    /**
+     * 用户留言功能
+     * @param houseMsg
+     */
+    void houseLeaveMsg(AddHouseMsg houseMsg);
 }

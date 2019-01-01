@@ -19,7 +19,7 @@ import java.util.Map;
  * rabbitmq 配置
  * Created by steadyjack on 2017/12/01.
  */
-//@Configuration
+@Configuration
 public class RabbitmqConfig {
 
     private final static Logger log = LoggerFactory.getLogger("mqLog");
@@ -45,7 +45,7 @@ public class RabbitmqConfig {
     @Bean
     public Queue activationQueue(){
         Map<String, Object> params = new HashMap<>();
-        params.put("x-message-ttl",180000);
+        params.put("x-message-ttl",60000);
         params.put("x-dead-letter-exchange","vendor.delay.exchange");
         params.put("x-dead-letter-routing-key","vendor.delay");
         return new Queue("vendor.activation.queue", true,false,false,params);
@@ -85,6 +85,27 @@ public class RabbitmqConfig {
     }
 
     /**email队列配置**/
+
+
+    /**留言队列配置**/
+
+    @Bean
+    public DirectExchange leaveMsgExchange(){
+        return new DirectExchange("leave.msg.exchange");
+    }
+
+
+    @Bean
+    public Binding leaveMsgBinding(){
+        return BindingBuilder.bind(leaveMsgQueue()).to(leaveMsgExchange()).with("leave.msg");
+    }
+
+    @Bean
+    public Queue leaveMsgQueue(){
+        return new Queue("leave.msg.queue",true);
+    }
+
+    /**留言队列配置**/
 
     /**
      * 单一消费者

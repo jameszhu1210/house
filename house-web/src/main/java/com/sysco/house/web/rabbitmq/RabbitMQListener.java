@@ -1,9 +1,11 @@
 package com.sysco.house.web.rabbitmq;
 
 
+import com.sysco.house.biz.mapper.AgencyMapper;
 import com.sysco.house.biz.mapper.UserMapper;
 import com.sysco.house.biz.service.MailService;
 import com.sysco.house.common.model.User;
+import com.sysco.house.common.request.AddHouseMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -12,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.handler.annotation.Payload;
 
-//@Configuration
+@Configuration
 public class RabbitMQListener {
 
     private final static Logger log= LoggerFactory.getLogger("listen");
@@ -25,6 +27,9 @@ public class RabbitMQListener {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private AgencyMapper agencyMapper;
 
     @RabbitListener(queues = "vendor.send.email.queue",containerFactory = "singleListenerContainer")
     public void sendEmailMessage(@Payload User record){
@@ -45,10 +50,23 @@ public class RabbitMQListener {
             if(user.getEnable() == 0){
                 log.info("未激活： {} ","删除信息。。。。");
                 userMapper.deleteById(user.getId());
+                if(user.getAgencyId() != 0){
+                    agencyMapper.deleteById(user.getAgencyId());
+                }
             }
         }catch (Exception e){
             log.error("消息体解析 发生异常； ",e.fillInStackTrace());
         }
     }
 
+
+    @RabbitListener(queues = "leave.msg.queue",containerFactory = "singleListenerContainer")
+    public void sendEmailMessage(@Payload AddHouseMsg record){
+        try {
+            log.info("消费者监听交易记录信息： {} ",record.getMsg());
+            mailService.sendMail("用户留言", "来自用户" + record.getEmail() + "的留言", record.getAgencyEmail());
+        }catch (Exception e){
+            log.error("消息体解析 发生异常； ",e.fillInStackTrace());
+        }
+    }
 }

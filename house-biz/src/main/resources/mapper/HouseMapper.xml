@@ -52,6 +52,9 @@
     <if test="type!=null and type!='' and type>0">
       and a.type = #{type}
     </if>
+    <if test="bookmake!=null and bookmake!='' and bookmake>0">
+      and b.type = #{bookmake}
+    </if>
     <choose>
       <when test="sort != null and sort != ''">
         ORDER BY ${sort} ${order}
@@ -73,6 +76,9 @@
     </if>
     <if test="type!=null and type!='' and type>0">
       and a.type = #{type}
+    </if>
+    <if test="houseId!=null and houseId!='' and houseId>0">
+      and a.id = #{houseId}
     </if>
     <choose>
       <when test="sort != null and sort != ''">

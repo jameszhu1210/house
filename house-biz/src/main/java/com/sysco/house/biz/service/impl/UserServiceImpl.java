@@ -7,6 +7,7 @@ import com.sysco.house.biz.service.FileService;
 import com.sysco.house.biz.service.MailService;
 import com.sysco.house.biz.service.UserService;
 import com.sysco.house.common.exception.ValidationException;
+import com.sysco.house.common.model.Agency;
 import com.sysco.house.common.model.User;
 import com.sysco.house.common.request.RegisterUser;
 import com.sysco.house.common.utils.FormatterUtils;
@@ -54,11 +55,19 @@ public class UserServiceImpl implements UserService {
         user.setEnable(0);
         user.setCreateTime(FormatterUtils.getCreateTime());
         ObjectUtil.transfer(account, user);
+        userMapper.insert(user);
         //如果是经纪人
         if(account.getType() == 2){
+            Agency agency = new Agency();
+            ObjectUtil.transfer(account,agency);
+            agencyMapper.insert(agency);
+            user.setAgencyId(agency.getId());
 
+            User s = new User().setAgencyId(agency.getId());
+            EntityWrapper<User> ew = new EntityWrapper<>();
+            ew.eq("email", account.getEmail());
+            userMapper.update(s,ew);
         }
-        userMapper.insert(user);
         registerNotify(user);
 
     }

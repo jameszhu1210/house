@@ -7,9 +7,11 @@ import com.sysco.house.common.dto.HouseListDto;
 import com.sysco.house.common.model.House;
 import com.sysco.house.common.model.User;
 import com.sysco.house.common.request.AddHouse;
+import com.sysco.house.common.request.AddHouseMsg;
 import com.sysco.house.common.request.HouseListCondition;
 import com.sysco.house.common.request.OwnListCondition;
 import com.sysco.house.common.response.GenericResponse;
+import com.sysco.house.common.response.ResHouseDetail;
 import com.sysco.house.web.interceptor.UserContext;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,5 +107,41 @@ public class HouseController {
         return genericResponse;
     }
 
+
+    /**
+     * 房屋详情接口
+     * 1。房屋基本信息
+     * 2。经纪人信息
+     * 3。留言列表
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "house/detail", method = RequestMethod.GET)
+    @ApiOperation(value = "house/detail", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse houseDetail(Long id){
+        GenericResponse genericResponse = new GenericResponse();
+        genericResponse.setResult(true);
+        genericResponse.setMsg("查询房产详情成功");
+        ResHouseDetail detail = houseService.houseDetail(id);
+        genericResponse.setResponse(detail);
+        return genericResponse;
+    }
+
+    /**
+     * 留言功能接口，并且发送邮件
+     * @param houseMsg
+     * @return
+     */
+    @RequestMapping(value = "house/leaveMsg", method = RequestMethod.POST)
+    @ApiOperation(value = "house/leaveMsg", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse houseLeaveMsg(@RequestBody AddHouseMsg houseMsg){
+        GenericResponse genericResponse = new GenericResponse();
+        genericResponse.setResult(true);
+        genericResponse.setMsg("用户留言成功");
+        houseService.houseLeaveMsg(houseMsg);
+        return genericResponse;
+    }
 
 }
