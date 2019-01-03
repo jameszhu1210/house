@@ -61,6 +61,9 @@ subprojects {
         compile('org.springframework.boot:spring-boot-starter-mail')
         //rabbitmq
         compile "org.springframework.boot:spring-boot-starter-amqp"
+        //jedis
+        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
+        compile "org.springframework.boot:spring-boot-starter-data-redis"
         
         compile 'org.projectlombok:lombok:1.16.8'
         compile 'org.apache.commons:commons-lang3:3.0'
