@@ -1,4 +1,4 @@
-package com.sysco.house.web.utils;
+package com.sysco.house.common.utils;
 
 import redis.clients.jedis.BinaryClient;
 import redis.clients.jedis.Jedis;

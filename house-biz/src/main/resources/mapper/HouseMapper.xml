@@ -80,6 +80,13 @@
     <if test="houseId!=null and houseId!='' and houseId>0">
       and a.id = #{houseId}
     </if>
+    <if test="idList!=null">
+      and a.id in
+      <foreach collection="idList" item="houseId" index="index"
+               open="(" close=")" separator=",">
+        #{houseId}
+      </foreach>
+    </if>
     <choose>
       <when test="sort != null and sort != ''">
         ORDER BY ${sort} ${order}

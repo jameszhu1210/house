@@ -1,6 +1,6 @@
 package com.sysco.house.web.config;
 
-import com.sysco.house.web.utils.JedisUtil;
+import com.sysco.house.common.utils.JedisUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -2,6 +2,7 @@ package com.sysco.house.web.controller;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.sysco.house.biz.service.HouseService;
+import com.sysco.house.biz.service.RecommendService;
 import com.sysco.house.biz.service.UserService;
 import com.sysco.house.common.dto.HouseListDto;
 import com.sysco.house.common.model.House;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 
 @RestController
 public class HouseController {
@@ -27,6 +30,9 @@ public class HouseController {
 
     @Autowired
     private HouseService houseService;
+
+    @Autowired
+    private RecommendService recommendService;
 
     /**
      * 添加房屋接口
@@ -86,6 +92,22 @@ public class HouseController {
         return genericResponse;
     }
 
+    /**
+     * 热门房屋列表接口
+     * @return
+     */
+    @RequestMapping(value = "house/recommend", method = RequestMethod.GET)
+    @ApiOperation(value = "house/recommend", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse houseList(){
+        GenericResponse genericResponse = new GenericResponse();
+        genericResponse.setResult(true);
+        genericResponse.setMsg("查询热门房产列表页成功");
+        List<HouseListDto> hotHouse = recommendService.getHotHouse();
+        genericResponse.setRows(hotHouse);
+        return genericResponse;
+    }
+
 
     /**
      * 个人房产信息页
@@ -124,6 +146,8 @@ public class HouseController {
         genericResponse.setResult(true);
         genericResponse.setMsg("查询房产详情成功");
         ResHouseDetail detail = houseService.houseDetail(id);
+        double increase = recommendService.increase(id);
+        System.out.println(id + "----------" + increase);
         genericResponse.setResponse(detail);
         return genericResponse;
     }
