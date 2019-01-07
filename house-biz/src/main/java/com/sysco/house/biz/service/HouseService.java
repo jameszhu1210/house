@@ -36,6 +36,14 @@ public interface HouseService {
     void bindHouse2User(Long houseId, Long userId, Integer type);
 
     /**
+     * 取消绑定用户和房屋 接口
+     * @param houseId
+     * @param userId
+     * @param type
+     */
+    void unbindHouse2User(Long houseId, Long userId, Integer type);
+
+    /**
      * 个人房产信息页查询
      * @param condition
      */
@@ -53,4 +61,11 @@ public interface HouseService {
      * @param houseMsg
      */
     void houseLeaveMsg(AddHouseMsg houseMsg);
+
+    /**
+     * 用户评分功能
+     * @param id
+     * @param rating
+     */
+    void houseRating(Long id, Double rating);
 }

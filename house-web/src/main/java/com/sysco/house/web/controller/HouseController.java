@@ -168,4 +168,73 @@ public class HouseController {
         return genericResponse;
     }
 
+    /**
+     * 评分功能接口
+     * @param id
+     * @param rating
+     * @return
+     */
+    @RequestMapping(value = "house/rating", method = RequestMethod.GET)
+    @ApiOperation(value = "house/rating", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse houseRating(Long id, Double rating){
+        GenericResponse genericResponse = new GenericResponse();
+        genericResponse.setResult(true);
+        genericResponse.setMsg("房屋评分成功");
+        houseService.houseRating(id, rating);
+        return genericResponse;
+    }
+
+    /**
+     * 收藏功能接口
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "house/bookmark", method = RequestMethod.GET)
+    @ApiOperation(value = "house/bookmark", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse houseBookmark(Long id){
+        GenericResponse genericResponse = new GenericResponse();
+        User user = UserContext.getUser();
+        genericResponse.setResult(true);
+        genericResponse.setMsg("房屋收藏成功");
+        houseService.bindHouse2User(id, user.getId(), 2);
+        return genericResponse;
+    }
+
+    /**
+     * 取消收藏功能接口
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "house/unbookmark", method = RequestMethod.GET)
+    @ApiOperation(value = "house/unbookmark", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse houseUnbookmark(Long id){
+        GenericResponse genericResponse = new GenericResponse();
+        User user = UserContext.getUser();
+        genericResponse.setResult(true);
+        genericResponse.setMsg("取消房屋收藏成功");
+        houseService.unbindHouse2User(id, user.getId(), 2);
+        return genericResponse;
+    }
+
+    /**
+     * 收藏房屋列表功能接口
+     * @param condition
+     * @return
+     */
+    @RequestMapping(value = "house/bookmarked", method = RequestMethod.POST)
+    @ApiOperation(value = "house/bookmarked", response = GenericResponse.class)
+    @ResponseBody
+    public GenericResponse houseBookmarked(@RequestBody OwnListCondition condition){
+        GenericResponse genericResponse = new GenericResponse();
+        User user = UserContext.getUser();
+        condition.setUserId(user.getId());
+        genericResponse.setResult(true);
+        genericResponse.setMsg("查询收藏房屋列表成功");
+        Page<House> housePage = houseService.houseOwnList(condition);
+        genericResponse.setResponse(housePage);
+        return genericResponse;
+    }
 }

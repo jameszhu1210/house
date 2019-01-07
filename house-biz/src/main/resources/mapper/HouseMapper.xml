@@ -43,7 +43,8 @@
     a.create_time createTime,
     a.city_id cityId,
     a.community_id communityId,
-    a.address address
+    a.address address,
+    a.state
     from house a, house_user b
     where b.user_id = #{userId} and a.id = b.house_id
     <if test="name!=null and name!=''">

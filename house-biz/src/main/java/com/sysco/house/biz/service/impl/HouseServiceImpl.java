@@ -87,6 +87,15 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
+    public void unbindHouse2User(Long houseId, Long userId, Integer type) {
+        EntityWrapper<HouseUser> ew = new EntityWrapper<>();
+        ew.eq("house_id",houseId);
+        ew.eq("user_id",userId);
+        ew.eq("type",type);
+        houseUserMapper.delete(ew);
+    }
+
+    @Override
     public Page<House> houseOwnList(OwnListCondition condition) {
         Page<House> page = new Page<>(condition.getOffset(),condition.getLimit());
         page.setRecords(houseMapper.selectOwnList(page,condition));
@@ -151,5 +160,14 @@ public class HouseServiceImpl implements HouseService {
             message.getMessageProperties().setHeader(AbstractJavaTypeMapper.DEFAULT_CONTENT_CLASSID_FIELD_NAME,User.class.getName());
             return message;
         });
+    }
+
+    @Override
+    public void houseRating(Long id, Double rating) {
+        House house = houseMapper.selectById(id);
+        Double oldRating = house.getRating();
+        Double newRating = oldRating.equals(0D)? oldRating:Math.min((oldRating + rating)/2, 5);
+        House newHouse = new House().setId(id).setRating(newRating);
+        houseMapper.updateById(newHouse);
     }
 }
