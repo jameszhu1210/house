@@ -1,4 +1,21 @@
-
+buildscript {
+    ext {
+        springBootVersion = '1.5.9.RELEASE'
+    }
+}
 dependencies {
-    
+    //jedis
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
+    compile "org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}"
+    //spring mail
+    compile("org.springframework.boot:spring-boot-starter-mail:${springBootVersion}")
+    //rabbitmq
+    compile "org.springframework.boot:spring-boot-starter-amqp:${springBootVersion}"
+    //mybatis plus
+    compile("org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}")
+    compile 'com.baomidou:mybatisplus-spring-boot-starter:1.0.5'
+    compile 'com.baomidou:mybatis-plus:2.1.8'
+    //swagger2
+    compile('io.springfox:springfox-swagger2:2.8.0')
+    runtime('io.springfox:springfox-swagger-ui:2.8.0')
 }

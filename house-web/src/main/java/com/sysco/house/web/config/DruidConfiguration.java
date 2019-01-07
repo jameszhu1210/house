@@ -1,4 +1,4 @@
-package com.sysco.house.biz.config;
+package com.sysco.house.web.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
@@ -16,7 +16,7 @@ import java.sql.SQLException;
 /**
  * Created by james.zhu on 2018/12/24.
  */
-//@Configuration
+@Configuration
 public class DruidConfiguration {
     @Value("${spring.datasource.url}")
     private String dbUrl;
